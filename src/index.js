@@ -1,37 +1,31 @@
-import FontFaceObserver from "fontfaceobserver";
-import vectorizeText from "vectorize-text";
-import store from "store";
+import FontFaceObserver from 'fontfaceobserver';
+import vectorizeText from 'vectorize-text';
+import store from 'store';
 
 const range = x => new Array(x).fill(null).map((v, i) => i);
 
-const app = document.getElementById("app");
-const canvas = document.createElement("canvas");
-const ctx = canvas.getContext("2d");
+const app = document.getElementById('app');
+const resetButton = document.getElementById('reset-button');
+const canvas = document.createElement('canvas');
+const ctx = canvas.getContext('2d');
 
-const monthsSizes = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-const monthsNames = [
-  "jan",
-  "fev",
-  "mar",
-  "apr",
-  "may",
-  "jun",
-  "jul",
-  "aug",
-  "sep",
-  "oct",
-  "nov",
-  "dec"
-];
-
-if (store.get("calendar") === undefined) {
-  const initialState = monthsSizes.map((count, mouthIndex) =>
-    range(count).map(day => false)
-  );
-  store.set("calendar", initialState);
+function isLeapYear(year) {
+  return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
 }
 
-const state = store.get("calendar");
+const now = new Date();
+const daysInFeb = isLeapYear(now.getFullYear()) ? 28 : 29;
+
+const monthsSizes = [31, daysInFeb, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+const monthsNames = ['jan', 'fev', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+
+const getInitialState = () => monthsSizes.map((count, mouthIndex) => range(count).map(day => false));
+
+if (store.get('calendar') === undefined) {
+  store.set('calendar', getInitialState());
+}
+
+let state = store.get('calendar');
 
 function isOn(pos) {
   return state[pos.x][pos.y];
@@ -39,11 +33,21 @@ function isOn(pos) {
 
 function toggle(pos) {
   state[pos.x][pos.y] = !state[pos.x][pos.y];
-  store.set("calendar", state);
+  store.set('calendar', state);
+}
+
+function resetData() {
+  const sure = window.confirm('This will reset the app and cannot be undone, are you sure ?');
+  if (sure) {
+    state = getInitialState();
+    store.set('calendar', state);
+    events.render();
+  }
 }
 
 let events = {
-  onClick: () => {}
+  onClick: () => {},
+  render: () => {},
 };
 
 function run() {
@@ -56,8 +60,8 @@ function run() {
   const gridX = (winWidth - padding * 2) / 12;
   const gridY = gridX * 0.75;
   const montheNameHeight = gridX * monthsNameRatio;
-  const height =
-    montheNameHeight + gridY * Math.max(...monthsSizes) + padding * 2;
+  const bottomMargin = 100;
+  const height = montheNameHeight + gridY * Math.max(...monthsSizes) + padding * 2 + bottomMargin;
   const width = winWidth;
 
   const hexaRadius = gridX * 0.35;
@@ -67,9 +71,7 @@ function run() {
   canvas.height = height / pixelRatio;
 
   const grid = monthsSizes
-    .map((count, mouthIndex) =>
-      range(count).map(day => ({ x: mouthIndex, y: day }))
-    )
+    .map((count, mouthIndex) => range(count).map(day => ({ x: mouthIndex, y: day })))
     .reduce((acc, arr) => acc.concat(arr), []);
 
   const fontPathCache = {};
@@ -80,13 +82,13 @@ function run() {
     }
 
     const polygons = vectorizeText(text, {
-      font: "Source Sans Pro",
+      font: 'Source Sans Pro',
       polygons: true,
       size: size,
       lineHeight: size,
-      textAlign: "center",
-      textBaseline: "alphabetic",
-      fontWeight: fontWeight
+      textAlign: 'center',
+      textBaseline: 'alphabetic',
+      fontWeight: fontWeight,
     });
 
     fontPathCache[text] = polygons;
@@ -94,17 +96,17 @@ function run() {
   }
 
   function fontPath(x, y, text, size, fontWeight = 300) {
-    let textPath = "";
+    let textPath = '';
     fontPathPoly(text, size, fontWeight).forEach(function(loops) {
       loops.forEach(function(points) {
         const reverse = points.slice().reverse();
         var start = reverse[0];
-        textPath += " M " + (x + start[0]) + " " + (y + start[1]);
+        textPath += ' M ' + (x + start[0]) + ' ' + (y + start[1]);
         for (var i = 1; i < reverse.length; ++i) {
           var p = reverse[i];
-          textPath += " L " + (x + p[0]) + " " + (y + p[1]);
+          textPath += ' L ' + (x + p[0]) + ' ' + (y + p[1]);
         }
-        textPath += " L " + (x + start[0]) + " " + (y + start[1]);
+        textPath += ' L ' + (x + start[0]) + ' ' + (y + start[1]);
       });
     });
 
@@ -130,7 +132,7 @@ function run() {
       const p3angle = stepAngle + Math.PI / 6;
       const p3x = stepX + roundedVal * Math.cos(p3angle);
       const p3y = stepY + roundedVal * Math.sin(p3angle);
-      const action = step === 0 ? "moveTo" : "lineTo";
+      const action = step === 0 ? 'moveTo' : 'lineTo';
       if (reverse) {
         path[action](p3x, p3y);
         path.quadraticCurveTo(p2x, p2y, p1x, p1y, roundedVal);
@@ -148,7 +150,7 @@ function run() {
   function getCoord(pos) {
     return {
       x: padding + gridX / 2 + pos.x * gridX,
-      y: montheNameHeight + padding + gridY / 2 + pos.y * gridY
+      y: montheNameHeight + padding + gridY / 2 + pos.y * gridY,
     };
   }
 
@@ -157,7 +159,7 @@ function run() {
     lightGradient.addColorStop(0, `rgb(248, 255, 160, ${power})`);
     lightGradient.addColorStop(0.3, `rgb(248, 255, 160, ${power})`);
     lightGradient.addColorStop(0.4, `rgb(248, 255, 160, ${power * 0.5})`);
-    lightGradient.addColorStop(1, "rgb(248, 255, 160, 0)");
+    lightGradient.addColorStop(1, 'rgb(248, 255, 160, 0)');
 
     ctx.fillStyle = lightGradient;
     ctx.beginPath();
@@ -185,28 +187,15 @@ function run() {
   function gold() {
     grid.forEach(pos => {
       const { x, y } = getCoord(pos);
-      ctx.strokeStyle = "rgb(185, 178, 128)";
+      ctx.strokeStyle = 'rgb(185, 178, 128)';
       ctx.lineWidth = hexaRadius * 0.03;
-      ctx.stroke(
-        hexagonePath(x, y, hexaRadius * 0.93, Math.PI / 6, hexaRounded)
-      );
-      ctx.stroke(
-        hexagonePath(x, y, hexaRadius * 0.86, Math.PI / 6, hexaRounded)
-      );
-      ctx.stroke(
-        hexagonePath(x, y, hexaRadius * 0.79, Math.PI / 6, hexaRounded)
-      );
-      const path = hexagonePath(
-        x,
-        y,
-        hexaRadius * 0.74,
-        Math.PI / 6,
-        hexaRounded,
-        true
-      );
+      ctx.stroke(hexagonePath(x, y, hexaRadius * 0.93, Math.PI / 6, hexaRounded));
+      ctx.stroke(hexagonePath(x, y, hexaRadius * 0.86, Math.PI / 6, hexaRounded));
+      ctx.stroke(hexagonePath(x, y, hexaRadius * 0.79, Math.PI / 6, hexaRounded));
+      const path = hexagonePath(x, y, hexaRadius * 0.74, Math.PI / 6, hexaRounded, true);
       const textSize = Math.round(hexaRadius * 1.2);
       path.addPath(fontPath(x, y + textSize * 1.3, pos.y + 1, textSize, 400));
-      ctx.fillStyle = "rgba(185, 178, 128, 0.8)";
+      ctx.fillStyle = 'rgba(185, 178, 128, 0.8)';
       ctx.fill(path);
       const goldCircle = (x, y, size) => {
         ctx.beginPath();
@@ -214,7 +203,7 @@ function run() {
         ctx.fill();
       };
       if (pos.y !== 0) {
-        ctx.fillStyle = "rgb(185, 178, 128)";
+        ctx.fillStyle = 'rgb(185, 178, 128)';
         ctx.beginPath();
         goldCircle(x - gridX * 0.15, y - gridY * 0.5, hexaRadius * 0.12);
         goldCircle(x + gridX * 0.15, y - gridY * 0.5, hexaRadius * 0.12);
@@ -248,19 +237,11 @@ function run() {
     monthsNames.forEach((month, index) => {
       const y = padding;
       const x = padding + gridX / 2 + index * gridX;
-      path.addPath(
-        fontPath(
-          x,
-          y + montheNameHeight * 1.4,
-          month,
-          Math.round(hexaRadius * 1.5),
-          300
-        )
-      );
+      path.addPath(fontPath(x, y + montheNameHeight * 1.4, month, Math.round(hexaRadius * 1.5), 300));
     });
 
-    ctx.fillStyle = "rgba(20, 20, 20, 0.98)";
-    ctx.fill(path, "evenodd");
+    ctx.fillStyle = 'rgba(20, 20, 20, 0.98)';
+    ctx.fill(path, 'evenodd');
   }
 
   function neon() {
@@ -269,27 +250,21 @@ function run() {
         return;
       }
       const { x, y } = getCoord(pos);
-      const path = hexagonePath(
-        x,
-        y,
-        hexaRadius * 0.85,
-        Math.PI / 6,
-        hexaRounded
-      );
+      const path = hexagonePath(x, y, hexaRadius * 0.85, Math.PI / 6, hexaRounded);
       ctx.lineWidth = hexaRadius * 1.5;
-      ctx.strokeStyle = "rgba(249, 253, 206, 0.02)";
+      ctx.strokeStyle = 'rgba(249, 253, 206, 0.02)';
       ctx.stroke(path);
       ctx.lineWidth = hexaRadius * 1;
-      ctx.strokeStyle = "rgba(249, 253, 206, 0.02)";
+      ctx.strokeStyle = 'rgba(249, 253, 206, 0.02)';
       ctx.stroke(path);
       ctx.lineWidth = hexaRadius * 0.6;
-      ctx.strokeStyle = "rgba(249, 253, 206, 0.02)";
+      ctx.strokeStyle = 'rgba(249, 253, 206, 0.02)';
       ctx.stroke(path);
       ctx.lineWidth = hexaRadius * 0.3;
-      ctx.strokeStyle = "rgba(249, 253, 206, 0.3)";
+      ctx.strokeStyle = 'rgba(249, 253, 206, 0.3)';
       ctx.stroke(path);
       ctx.lineWidth = hexaRadius * 0.2;
-      ctx.strokeStyle = "rgba(249, 253, 206, 0.5)";
+      ctx.strokeStyle = 'rgba(249, 253, 206, 0.5)';
       ctx.stroke(path);
     });
   }
@@ -298,7 +273,7 @@ function run() {
     ctx.save();
     ctx.scale(1 / pixelRatio, 1 / pixelRatio);
 
-    ctx.fillStyle = "black";
+    ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, width, height);
 
     lights(gridX * 0.9);
@@ -314,9 +289,7 @@ function run() {
     const pY = event.offsetY * pixelRatio;
     const pos = grid.find(pos => {
       const { x, y } = getCoord(pos);
-      const dist = Math.sqrt(
-        Math.pow(Math.abs(pX - x), 2) + Math.pow(Math.abs(pY - y), 2)
-      );
+      const dist = Math.sqrt(Math.pow(Math.abs(pX - x), 2) + Math.pow(Math.abs(pY - y), 2));
       return dist < hexaRadius;
     });
     if (pos) {
@@ -325,13 +298,15 @@ function run() {
     }
   };
 
+  events.render = render;
+
   Promise.all([
-    new FontFaceObserver("Source Sans Pro", {
-      weight: 300
+    new FontFaceObserver('Source Sans Pro', {
+      weight: 300,
     }).load(),
-    new FontFaceObserver("Source Sans Pro", {
-      weight: 400
-    }).load()
+    new FontFaceObserver('Source Sans Pro', {
+      weight: 400,
+    }).load(),
   ])
     .then(function() {
       render();
@@ -341,12 +316,16 @@ function run() {
     });
 }
 
-document.addEventListener("click", e => {
+document.addEventListener('click', e => {
   events.onClick(e);
 });
 
-window.addEventListener("resize", () => {
+window.addEventListener('resize', () => {
   run();
+});
+
+resetButton.addEventListener('click', () => {
+  resetData();
 });
 
 app.appendChild(canvas);

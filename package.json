@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.html",
   "scripts": {
-    "start": "parcel index.html --open",
-    "build": "parcel build index.html",
+    "start": "parcel src/index.html --open",
+    "build": "parcel build src/index.html",
     "deploy": "npm run build && tar -cvf ./deploy.tar --exclude='*.map' ./captain-definition ./dist/* && npx captainduckduck deploy -t ./deploy.tar"
   },
   "dependencies": {
