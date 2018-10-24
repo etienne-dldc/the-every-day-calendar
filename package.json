@@ -1,0 +1,21 @@
+{
+  "name": "the-every-day-calendar",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "start": "parcel index.html --open",
+    "build": "parcel build index.html"
+  },
+  "dependencies": {
+    "fontfaceobserver": "2.0.13",
+    "store": "2.0.12",
+    "vectorize-text": "3.0.2"
+  },
+  "devDependencies": {
+    "@types/fontfaceobserver": "0.0.6",
+    "@types/store": "2.0.0",
+    "parcel-bundler": "^1.6.1"
+  },
+  "keywords": []
+}
