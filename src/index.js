@@ -14,7 +14,7 @@ function isLeapYear(year) {
 }
 
 const now = new Date();
-const daysInFeb = isLeapYear(now.getFullYear()) ? 28 : 29;
+const daysInFeb = isLeapYear(now.getFullYear()) ? 29 : 28;
 
 const monthsSizes = [31, daysInFeb, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 const monthsNames = ['jan', 'fev', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
