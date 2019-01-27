@@ -6,7 +6,7 @@
   "scripts": {
     "start": "parcel src/index.html --open",
     "build": "parcel build src/index.html",
-    "deploy": "npm run build && tar -cvf ./deploy.tar --exclude='*.map' ./captain-definition ./dist/* && npx captainduckduck deploy -t ./deploy.tar"
+    "deploy": "npm run build && tar -cvf ./deploy.tar --exclude='*.map' ./captain-definition ./dist/* && npx caprover deploy -t ./deploy.tar"
   },
   "dependencies": {
     "fontfaceobserver": "2.0.13",

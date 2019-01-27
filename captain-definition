@@ -1,4 +1,4 @@
 {
-  "schemaVersion": 1,
-  "dockerfileLines": ["FROM socialengine/nginx-spa:latest", "COPY ./src/dist /app", "RUN chmod -R 777 /app"]
+  "schemaVersion": 2,
+  "dockerfileLines": ["FROM socialengine/nginx-spa:latest", "COPY ./dist /app", "RUN chmod -R 777 /app"]
 }
