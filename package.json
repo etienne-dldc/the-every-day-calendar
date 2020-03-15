@@ -9,14 +9,14 @@
     "deploy": "npm run build && tar -cvf ./deploy.tar --exclude='*.map' ./captain-definition ./dist/* && npx caprover deploy -t ./deploy.tar"
   },
   "dependencies": {
-    "fontfaceobserver": "2.0.13",
+    "fontfaceobserver": "2.1.0",
     "store": "2.0.12",
     "vectorize-text": "3.0.2"
   },
   "devDependencies": {
     "@types/fontfaceobserver": "0.0.6",
-    "@types/store": "2.0.0",
-    "parcel-bundler": "^1.6.1"
+    "@types/store": "2.0.2",
+    "parcel-bundler": "^1.12.4"
   },
   "keywords": []
 }

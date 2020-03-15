@@ -1,88 +1,90 @@
 <html>
+  <head>
+    <title>The Every Day Calendar</title>
+    <meta charset="UTF-8" />
 
-<head>
-	<title>The Every Day Calendar</title>
-	<meta charset="UTF-8" />
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300" rel="stylesheet" />
+    <link rel="apple-touch-icon" sizes="57x57" href="./public/apple-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="./public/apple-icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="./public/apple-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="./public/apple-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="./public/apple-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="./public/apple-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="./public/apple-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="./public/apple-icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./public/apple-icon-180x180.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="./public/android-icon-192x192.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./public/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="./public/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./public/favicon-16x16.png" />
+    <link rel="manifest" href="./public/manifest.json" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
+    <meta name="msapplication-TileImage" content="./public/ms-icon-144x144.png" />
+    <meta name="theme-color" content="#ffffff" />
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #141414;
+        position: relative;
+      }
 
-	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300" rel="stylesheet">
-	<link rel="apple-touch-icon" sizes="57x57" href="./public/apple-icon-57x57.png">
-	<link rel="apple-touch-icon" sizes="60x60" href="./public/apple-icon-60x60.png">
-	<link rel="apple-touch-icon" sizes="72x72" href="./public/apple-icon-72x72.png">
-	<link rel="apple-touch-icon" sizes="76x76" href="./public/apple-icon-76x76.png">
-	<link rel="apple-touch-icon" sizes="114x114" href="./public/apple-icon-114x114.png">
-	<link rel="apple-touch-icon" sizes="120x120" href="./public/apple-icon-120x120.png">
-	<link rel="apple-touch-icon" sizes="144x144" href="./public/apple-icon-144x144.png">
-	<link rel="apple-touch-icon" sizes="152x152" href="./public/apple-icon-152x152.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="./public/apple-icon-180x180.png">
-	<link rel="icon" type="image/png" sizes="192x192" href="./public/android-icon-192x192.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="./public/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="96x96" href="./public/favicon-96x96.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="./public/favicon-16x16.png">
-	<link rel="manifest" href="./public/manifest.json">
-	<meta name="msapplication-TileColor" content="#ffffff">
-	<meta name="msapplication-TileImage" content="./public/ms-icon-144x144.png">
-	<meta name="theme-color" content="#ffffff">
-	<style>
-		html,
-		body {
-			margin: 0;
-			padding: 0;
-			background: #141414;
-			position: relative;
-		}
+      #credits {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 20px;
+        color: white;
+        font-family: 'Source Sans Pro', sans-serif;
+        font-weight: 300;
+        text-align: center;
+        line-height: 1.6;
+        font-size: 16px;
+      }
 
-		#credits {
-			position: absolute;
-			bottom: 0;
-			left: 0;
-			right: 0;
-			padding: 20px;
-			color: white;
-			font-family: 'Source Sans Pro', sans-serif;
-			font-weight: 300;
-			text-align: center;
-			line-height: 1.6;
-			font-size: 16px;
-		}
+      a {
+        color: #81d4fa;
+      }
 
-		a {
-			color: #81D4FA;
-		}
+      a:hover {
+        color: #03a9f4;
+      }
 
-		a:hover {
-			color: #03A9F4;
-		}
+      button {
+        border: none;
+        display: inline-block;
+        text-decoration: underline;
+        color: #81d4fa;
+        background: none;
+        font-size: inherit;
+        line-height: initial;
+        cursor: pointer;
+        font-weight: inherit;
+      }
 
-		button {
-			border: none;
-			display: inline-block;
-			text-decoration: underline;
-			color: #81D4FA;
-			background: none;
-			font-size: inherit;
-			line-height: initial;
-			cursor: pointer;
-			font-weight: inherit;
-		}
+      button:hover {
+        color: #03a9f4;
+      }
+    </style>
+  </head>
 
-		button:hover {
-			color: #03A9F4;
-		}
-	</style>
-</head>
+  <body>
+    <div id="app"></div>
+    <div id="credits">
+      Made by <a href="https://twitter.com/Etienne_dot_js">Etienne Dldc</a> - Code available on
+      <a href="https://github.com/etienne-dldc/the-every-day-calendar/tree/master">Github</a>
+      <br />
+      Inspired by
+      <a href="https://www.kickstarter.com/projects/simonegiertz/the-every-day-calendar/description"
+        >The Every Day Calendar</a
+      >
+      by <a href="https://twitter.com/simonegiertz">Simone Giertz</a>
+      <br />
+      <button id="reset-button">Reset the app</button>
+    </div>
 
-<body>
-	<div id="app"></div>
-	<div id="credits">
-		Made by <a href="https://twitter.com/Etienne_dot_js">Etienne Dldc</a> - Code available on <a href="https://github.com/etienne-dldc/the-every-day-calendar/tree/master">Github</a>
-		<br />
-		Inspired by <a href="https://www.kickstarter.com/projects/simonegiertz/the-every-day-calendar/description">The Every
-			Day Calendar</a> by <a href="https://twitter.com/simonegiertz">Simone Giertz</a>
-		<br />
-		<button id="reset-button">Reset the app</button>
-	</div>
-
-	<script src="./index.js"></script>
-</body>
-
+    <script src="./index.js"></script>
+  </body>
 </html>

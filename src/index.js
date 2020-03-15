@@ -17,9 +17,23 @@ const now = new Date();
 const daysInFeb = isLeapYear(now.getFullYear()) ? 29 : 28;
 
 const monthsSizes = [31, daysInFeb, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-const monthsNames = ['jan', 'fev', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+const monthsNames = [
+  'jan',
+  'fev',
+  'mar',
+  'apr',
+  'may',
+  'jun',
+  'jul',
+  'aug',
+  'sep',
+  'oct',
+  'nov',
+  'dec'
+];
 
-const getInitialState = () => monthsSizes.map((count, mouthIndex) => range(count).map(day => false));
+const getInitialState = () =>
+  monthsSizes.map((count, mouthIndex) => range(count).map(day => false));
 
 if (store.get('calendar') === undefined) {
   store.set('calendar', getInitialState());
@@ -47,7 +61,7 @@ function resetData() {
 
 let events = {
   onClick: () => {},
-  render: () => {},
+  render: () => {}
 };
 
 function run() {
@@ -81,14 +95,14 @@ function run() {
       return fontPathCache[text];
     }
 
-    const polygons = vectorizeText(text, {
+    const polygons = vectorizeText(String(text), {
       font: 'Source Sans Pro',
       polygons: true,
       size: size,
       lineHeight: size,
       textAlign: 'center',
       textBaseline: 'alphabetic',
-      fontWeight: fontWeight,
+      fontWeight: fontWeight
     });
 
     fontPathCache[text] = polygons;
@@ -97,8 +111,8 @@ function run() {
 
   function fontPath(x, y, text, size, fontWeight = 300) {
     let textPath = '';
-    fontPathPoly(text, size, fontWeight).forEach(function(loops) {
-      loops.forEach(function(points) {
+    fontPathPoly(text, size, fontWeight).forEach(loops => {
+      loops.forEach(points => {
         const reverse = points.slice().reverse();
         var start = reverse[0];
         textPath += ' M ' + (x + start[0]) + ' ' + (y + start[1]);
@@ -150,7 +164,7 @@ function run() {
   function getCoord(pos) {
     return {
       x: padding + gridX / 2 + pos.x * gridX,
-      y: montheNameHeight + padding + gridY / 2 + pos.y * gridY,
+      y: montheNameHeight + padding + gridY / 2 + pos.y * gridY
     };
   }
 
@@ -237,7 +251,9 @@ function run() {
     monthsNames.forEach((month, index) => {
       const y = padding;
       const x = padding + gridX / 2 + index * gridX;
-      path.addPath(fontPath(x, y + montheNameHeight * 1.4, month, Math.round(hexaRadius * 1.5), 300));
+      path.addPath(
+        fontPath(x, y + montheNameHeight * 1.4, month, Math.round(hexaRadius * 1.5), 300)
+      );
     });
 
     ctx.fillStyle = 'rgba(20, 20, 20, 0.98)';
@@ -302,11 +318,11 @@ function run() {
 
   Promise.all([
     new FontFaceObserver('Source Sans Pro', {
-      weight: 300,
+      weight: 300
     }).load(),
     new FontFaceObserver('Source Sans Pro', {
-      weight: 400,
-    }).load(),
+      weight: 400
+    }).load()
   ])
     .then(function() {
       render();
